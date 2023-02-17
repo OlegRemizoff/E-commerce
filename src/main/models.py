@@ -36,7 +36,7 @@ class Product(models.Model):
     '''Товар'''
     title = models.CharField("Наименование", max_length=255)
     slug = models.SlugField("URL", unique=True)
-    image = models.ImageField('Изображение', blank=True, upload_to='uploads/img/')
+    image = models.ImageField('Изображение', blank=True, upload_to='img/')
     price = models.DecimalField('Цена', max_digits=9, decimal_places=2, default=0.00)
     description = models.TextField('Описание', blank=True)
     digital = models.BooleanField(default=False, null=True, blank=True)
