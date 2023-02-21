@@ -2,7 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.urls import reverse
 
+
+def get_product_url(obj, viewname):
+    ct_model = obj.__class__._meta.model_name
+    return reverse(viewname, kwargs={"ct_model": ct_model, "slug": obj.slug})
 
 
 class LatestProductsManager:
@@ -90,6 +95,10 @@ class SmartPhone(Product):
         return f'{self.category.name} {self.title}'
 
 
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
+
+
 class Notebook(Product):
     '''Ноутбуки'''
     os = models.CharField('Операционная система', max_length=255, blank=True)
@@ -107,6 +116,8 @@ class Notebook(Product):
     def __str__(self) -> str:
         return f'{self.category.name} {self.title}'
 
+    def get_absolute_url(self):
+        return get_product_url(self, 'product_detail')
 
 
 class CartProduct(models.Model):
