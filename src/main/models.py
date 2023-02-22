@@ -107,7 +107,7 @@ class Notebook(Product):
     memory = models.CharField('Память', max_length=255, blank=True)
     battery = models.CharField('Аккумулятор', max_length=255, blank=True)
     cpu = models.CharField('Процессор', max_length=255, blank=True)
-    weight = models.CharField('SIM-карты', max_length=255, blank=True)
+    weight = models.CharField('Вес', max_length=255, blank=True)
 
     class Meta:
         verbose_name = 'Ноутбук'
