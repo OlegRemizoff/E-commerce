@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
-from django.http import HttpResponse
-from .models import SmartPhone, Notebook
+from .models import SmartPhone, Notebook, LatestProducts
 
 
 
 
-def index(requets):
-    return HttpResponse("<h1>Django</h1>")
+def index(request):
+    products = LatestProducts.objects.get_products_for_main_page("smartphone", "notebook")
+    return render(request, 'main/index.html', {"products": products})
 
 
 class ProductDetailView(DetailView):
