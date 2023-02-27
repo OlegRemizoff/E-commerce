@@ -57,10 +57,10 @@
                 <div class="col-lg-4 col-sm-6 mb-3">
                     <div class="product-card">
                         <div class="product-tumb">
-                            <a href="product.html"><img src="{{ product.image.url }}" alt=""></a>
+                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" alt=""></a>
                         </div>
                         <div class="product-details">
-                            <h4><a href="product.html">{{ product.title }}</a></h4>
+                            <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
                             <p>{{ product.description }}</p>
                             <div class="product-bottom-details d-flex justify-content-between">
                                 <div class="product-price"><small>$96.00</small>$230.99</div>

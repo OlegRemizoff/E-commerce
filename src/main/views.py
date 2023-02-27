@@ -3,10 +3,9 @@ from django.views.generic import DetailView
 from .models import SmartPhone, Notebook, LatestProducts
 
 
-
-
 def index(request):
-    products = LatestProducts.objects.get_products_for_main_page("smartphone", "notebook")
+    products = LatestProducts.objects.get_products_for_main_page(
+        "smartphone", "notebook")
     return render(request, 'main/index.html', {"products": products})
 
 
@@ -14,11 +13,11 @@ class ProductDetailView(DetailView):
 
     CT_MODEL_MODEL_CLASS = {
         "notebook": Notebook,
-        "smartphone": SmartPhone, 
+        "smartphone": SmartPhone,
     }
 
-
     def dispatch(self, request, *args, **kwargs):
+        # забираем имя модели из **kwargs (urls/path(<str:ct_model>) ) и оределяем имя модели
         self.model = self.CT_MODEL_MODEL_CLASS[kwargs['ct_model']]
         self.queryset = self.model._base_manager.all()
         return super().dispatch(request, *args, **kwargs)
