@@ -5,6 +5,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.urls import reverse
 
 
+
+def get_model_for_count(*models_names):
+    return [models.Count(model_name) for model_name in models_names]
+
+
 def get_product_url(obj, viewname):
     ct_model = obj.__class__._meta.model_name
     return reverse(viewname, kwargs={"ct_model": ct_model, "slug": obj.slug})
@@ -29,6 +34,27 @@ class LatestProducts:
     objects = LatestProductsManager()
 
 
+# получение категори и подсчет товаров в этой категории
+class CategoryManager(models.Manager):
+
+    CATEGORY_NAME_COUNT_NAME = {
+        'Ноутбуки': 'notebook__count',
+        'Смартфоны': 'smartphone__count',
+    }
+
+    def get_queryset(self):
+        return super().get_queryset()
+
+    def get_category_for_navbar(self):
+        models = get_model_for_count('notebook', 'smartphone')
+        qs = list(self.get_queryset().annotate(*models).values())
+
+        return [dict(name=c['name'], slug=c['slug'], 
+                    count=c[self.CATEGORY_NAME_COUNT_NAME[c['name']]]) for c in qs]
+    
+    #print(Category.objects.get_category_for_navbar())
+    #[{'name': 'Ноутбуки', 'slug': 'notebooks', 'count': 2}, {'name': 'Смартфоны', 'slug': 'smartphones', 'count': 2}]
+
 
 class Customer(models.Model):
     '''Пользователь'''
@@ -48,6 +74,7 @@ class Category(models.Model):
     '''Категория'''
     name = models.CharField("Имя категории", max_length=255)
     slug = models.SlugField("URL", unique=True)
+    objects = CategoryManager()
 
     class Meta:
         verbose_name = 'Категория'
@@ -132,7 +159,7 @@ class CartProduct(models.Model):
     final_price = models.DecimalField('Цена', max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self) -> str:
-        return "Продукт: {} (Для корзины)".format(self.product.title)
+        return "Продукт: {} (Для корзины)".format(self.content_object.title)
 
 
 class Cart(models.Model):
@@ -147,3 +174,4 @@ class Cart(models.Model):
 
     def __str__(self) -> str:
         return str(self.id)
+
