@@ -4,10 +4,9 @@ from .models import SmartPhone, Notebook, LatestProducts, Category
 
 
 def index(request):
-    categories = Category.objects.get_category_for_navbar()
     products = LatestProducts.objects.get_products_for_main_page(
         "smartphone", "notebook")
-    return render(request, 'main/index.html', {"products": products, 'categories': categories})
+    return render(request, 'main/index.html', {"products": products})
 
 
 class ProductDetailView(DetailView):
@@ -28,3 +27,5 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
     template_name = 'main/product_detail.html'
     slug_url_kwarg = 'slug'
+
+
