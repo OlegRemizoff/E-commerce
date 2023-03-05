@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from .models import SmartPhone, Notebook, LatestProducts, Category
 
 
@@ -29,3 +29,11 @@ class ProductDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
 
+
+
+class CategoryDetailView(DetailView):
+
+    model = Category
+    queryset = Category.objects.all()
+    context_object_name = "category"
+    slug_url_kwarg = 'slug'

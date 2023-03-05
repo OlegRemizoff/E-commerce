@@ -134,7 +134,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     {% get_categories as categories %} <!-- псевдоним -->
                                     {% for category in  categories %}
-                                    <li><a class="dropdown-item" href="#">{{ category.name }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ category.url }}">{{ category.name }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>

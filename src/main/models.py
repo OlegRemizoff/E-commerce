@@ -47,13 +47,21 @@ class CategoryManager(models.Manager):
 
     def get_category_for_navbar(self):
         models = get_model_for_count('notebook', 'smartphone')
-        qs = list(self.get_queryset().annotate(*models).values())
+        qs = list(self.get_queryset().annotate(*models))
+        data = [
+            dict(name=c.name, url=c.get_absolute_url(), count=getattr(c,
+            self.CATEGORY_NAME_COUNT_NAME[c.name] )) for c in qs
+        ]
+        return data
 
-        return [dict(name=c['name'], slug=c['slug'], 
-                    count=c[self.CATEGORY_NAME_COUNT_NAME[c['name']]]) for c in qs]
+        # OLD
+        # qs = list(self.get_queryset().annotate(*models).values())
+
+        # return [dict(name=c['name'], slug=c['slug'], 
+        #             count=c[self.CATEGORY_NAME_COUNT_NAME[c['name']]]) for c in qs]
     
-    #print(Category.objects.get_category_for_navbar())
-    #[{'name': 'Ноутбуки', 'slug': 'notebooks', 'count': 2}, {'name': 'Смартфоны', 'slug': 'smartphones', 'count': 2}]
+        #print(Category.objects.get_category_for_navbar())
+        #[{'name': 'Ноутбуки', 'slug': 'notebooks', 'count': 2}, {'name': 'Смартфоны', 'slug': 'smartphones', 'count': 2}]
 
 
 class Customer(models.Model):
@@ -83,6 +91,8 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})
 
 class Product(models.Model):
     '''Товар'''
