@@ -1,12 +1,20 @@
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, View
 from .models import SmartPhone, Notebook, LatestProducts, Category
 
 
-def index(request):
-    products = LatestProducts.objects.get_products_for_main_page(
-        "smartphone", "notebook")
-    return render(request, 'main/index.html', {"products": products})
+# def index(request):
+#     products = LatestProducts.objects.get_products_for_main_page(
+#         "smartphone", "notebook")
+#     return render(request, 'main/index.html', {"products": products})
+
+
+class HomeView(View):
+
+    def get(self, request, *args, **kwargs):
+        products = LatestProducts.objects.get_products_for_main_page(
+            "smartphone", "notebook")
+        return render(request, 'main/index.html', {"products": products})
 
 
 class ProductDetailView(DetailView):
@@ -27,8 +35,6 @@ class ProductDetailView(DetailView):
     context_object_name = "product"
     template_name = 'main/product_detail.html'
     slug_url_kwarg = 'slug'
-
-
 
 
 class CategoryDetailView(DetailView):
