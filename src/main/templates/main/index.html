@@ -64,8 +64,12 @@
                             <p>{{ product.description }}</p>
                             <div class="product-bottom-details d-flex justify-content-between">
                                 <div class="product-price"><small>$96.00</small>$230.99</div>
+                                {% comment '4.36' %}
+                                TODO: попробовать в индексной вьюхе
+                                {% url 'add_to_cart' ct_model=ct_model slug=product.slug %}
+                                {% endcomment %}
                                 <div class="product-links">
-                                    <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="{% url 'add_to_cart' product.title product.slug %}"><i class="fas fa-shopping-cart"></i></a>
                                     <a href="#"><i class="far fa-heart"></i></a>
                                 </div>
                             </div>
