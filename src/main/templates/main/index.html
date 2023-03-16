@@ -1,13 +1,14 @@
+
+
 {% extends 'base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
+{% load tags_for_inc %}
+
+
 
 
 {% block content %}
 <body>
-
-
 
     <div class="container-fluid my-carousel">
 
@@ -63,16 +64,21 @@
                             <h4><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
                             <p>{{ product.description }}</p>
                             <div class="product-bottom-details d-flex justify-content-between">
-                                <div class="product-price"><small>$96.00</small>$230.99</div>
-                                {% comment '4.36' %}
-                                TODO: попробовать в индексной вьюхе
-                                {% url 'add_to_cart' ct_model=ct_model slug=product.slug %}
-                                {% endcomment %}
+                                <div class="product-price"><small>$96.00</small>{{ product.price }}0 &#8381;</div>
+
+                                {% if product.category.slug == 'notebooks' %}
                                 <div class="product-links">
-                                    <a href="{% url 'add_to_cart' product.title product.slug %}"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="{% url 'add_to_cart' ct_model='notebook' slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
                                     <a href="#"><i class="far fa-heart"></i></a>
                                 </div>
+                                {% else %}
+                                <div class="product-links">
+                                    <a href="{% url 'add_to_cart' ct_model='smartphone' slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#"><i class="far fa-heart"></i></a>
+                                </div>
+                                {% endif %}
                             </div>
+                            <p>{{product | to_class_name}}</p>
                         </div>
                     </div>
                 </div>
@@ -124,3 +130,8 @@
 
 
 {% endblock %}
+
+
+
+
+
