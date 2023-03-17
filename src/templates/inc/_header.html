@@ -2,6 +2,7 @@
 {% load tags_for_inc %}
 
 
+
 <header>
     <div class="header-top py-3">
         <div class="container">
@@ -21,9 +22,12 @@
                     </form>
                     <a href="#" class="open-search"><i class="fas fa-search"></i></a>
 
-                    <a href="#" class="relative" data-bs-toggle="modal" data-bs-target="#cart-modal">
+                    <a href="{% url 'cart' %}" class="relative" data-bs-toggle="modallll" data-bs-target="#cart-modal">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="badge bg-danger rounded-pill count-items">0</span>
+                  {% comment %}      {% get_cart_quantity as cart %}{% endcomment %}
+
+                        <span class="badge bg-danger rounded-pill count-items">{{ cart.products.count }}</span>
+                    
                     </a>
                     <div class="modal fade" id="cart-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -118,7 +122,7 @@
 
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid p-0">
-                    <a class="navbar-brand" href="{% url 'home' %}">Shop Brand</a>
+                    <a class="navbar-brand" href="{% url 'home' %}">Shop Brand  </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

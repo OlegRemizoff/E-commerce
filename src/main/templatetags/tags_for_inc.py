@@ -1,7 +1,9 @@
 from django import template
 from main.models import Category, SmartPhone, Notebook
 
+
 register = template.Library()
+
 
 @register.simple_tag()
 def get_categories():
@@ -23,5 +25,6 @@ def to_class_name(value):
     return value.__class__._meta.model_name
 
 
-
-
+@register.inclusion_tag('inc/_header.html', takes_context=True)
+def get_header(context):
+    return context

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+
+
+{% block content %}
+<div class="row">
+  <section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-10">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-normal mb-0 text-black">Ваша корзина:  {% if not cart.products.count %} пуста {% endif %}</h3>
+            <div>
+              <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
+                    class="fas fa-angle-down mt-1"></i></a></p>
+            </div>
+          </div>
+          {% for item in cart.products.all %}
+          <div class="card rounded-3 mb-4">
+            <div class="card-body p-4">
+              <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-md-2 col-lg-2 col-xl-2">
+                  <img src="{{ item.content_object.image.url }}"
+                    class="img-fluid rounded-3" alt="Cotton T-shirt">
+                </div>
+                <div class="col-md-3 col-lg-3 col-xl-3">
+                  <p>Наименование</p>
+                  <p class="lead fw-normal mb-2">{{ item.content_object.title }}</p>
+                  <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
+                </div>
+
+                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                  <div style="margin-right: 10px;">
+                    <a href="" data-product="{{ item.product.id }}" data-action="remove" class="update-cart" style="text-decoration: none; color: #000;">&#9668;</a>
+                  </div>
+                  <p>{{ item.qty  }}</p>
+                  <div style="margin-left: 10px;">
+                    <a href="" data-product="{{ item.product.id }}" data-action="add" class="update-cart" style="text-decoration: none; color: #000;">	&#9658;</a>
+                  </div>
+
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                  <p>Цена</p>
+                  <h5 class="mb-0">{{ item.content_object.price|floatformat:3 }} &#8381;</h5>
+                </div>
+
+                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                  <a href="#!" class="text-danger"><img src="{% static 'img/trash.svg' %}" alt="" width="70px"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+          <div class="card mb-5">
+            <div class="card-body p-4">
+
+              <div class="float-end">
+                <p class="mb-0 me-5 d-flex align-items-center">
+                  <strong>Итого:<strong> <span
+                    class="lead fw-normal">{{ cart.final_price|floatformat:3 }} &#8381</span>
+                </p>
+              </div>
+
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger">Продолжить покупки</button>
+              
+              <button type="button" class="btn btn-primary">Оформить заказ</button>
+            </div>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <button data-product="{{ item.product.id }}" data-action="add" class="btn btn-link px-2 add-btn update-cart"></button>
+
+<input id="form1" min="0" name="quantity" value="{{ item.quantity }}" type="number"
+  class="form-control form-control-sm" />
+
+<button class="btn btn-link px-2"
+  onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+  <i class="fas fa-plus"></i>
+</button> -->
+
+
+
+
+<!-- <div class="float-right">
+    <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3"><a href="#">Вернуться к покупкам</a></button>
+    <a href="#"><button type="button" class="btn btn-lg btn-primary mt-2">К оплате</button></a>
+  </div> -->

@@ -44,6 +44,10 @@
 						<button class="btn btn-danger" type="button" id="button-addon2">Купить</button>
 					</div>
 				</div>
+				<div class="product-links">
+					<a href="{% url 'add_to_cart' ct_model=ct_model slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
+					<a href="#"><i class="far fa-heart"></i></a>
+				</div>
 
 			</div>
 

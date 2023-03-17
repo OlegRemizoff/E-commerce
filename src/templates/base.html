@@ -1,4 +1,6 @@
 {% load static %}
+{% load tags_for_inc %}
+
 
 <head>
     <!-- Required meta tags -->
@@ -13,7 +15,9 @@
     <title>Shop</title>
 </head>
 
-{% include 'inc/_header.html' %}
+  {% comment %}  {% include 'inc/_header.html' %} {% endcomment %}
+
+  {% get_header %}
 
 {% block content %}{% endblock %}
 
