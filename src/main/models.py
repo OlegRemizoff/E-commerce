@@ -115,6 +115,9 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    def get_model_name(self):
+        return self.__class__.__name__.lower()
+
 
 class SmartPhone(Product):
     '''Смартфоны'''
