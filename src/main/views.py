@@ -101,6 +101,22 @@ class DeleteFromCartView(CartMixin, View):
         return HttpResponseRedirect('/cart/')
 
 
+class CartChangeQTYView(CartMixin, View):
+
+    def post(self,request, *args, **kwargs):
+        # print(request.POST)
+        ct_model, product_slug = kwargs.get('ct_model'), kwargs.get('slug')
+        content_type = ContentType.objects.get(model=ct_model)
+        product = content_type.model_class().objects.get(slug=product_slug)
+        cart_product= CartProduct.objects.get(
+            user=self.cart.owner, cart=self.cart, content_type=content_type, object_id=product.id
+        )
+        qty = int(request.POST.get('qty'))
+        cart_product.qty = qty
+        cart_product.save()
+        self.cart.save() # для обновления информации в корзине
+        return HttpResponseRedirect('/cart/')
+
 
 
 class CartView(CartMixin, View):

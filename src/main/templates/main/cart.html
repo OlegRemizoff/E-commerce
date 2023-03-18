@@ -31,13 +31,18 @@
                 </div>
 
                 <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <div style="margin-right: 10px;">
+                  <!-- <div style="margin-right: 10px;">
                     <a href="" data-product="{{ item.product.id }}" data-action="remove" class="update-cart" style="text-decoration: none; color: #000;">&#9668;</a>
-                  </div>
-                  <p>{{ item.qty  }}</p>
-                  <div style="margin-left: 10px;">
+                  </div> -->
+                  <form action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}" method="POST">
+                    {% csrf_token %}
+                    <input type="number" name="qty" min="1" class="form-control"  value="{{ item.qty }}">
+                    <br>
+                    <input type="submit" class="btn btn-primary form-control" value="Изменить кол-во">
+                  </form>
+                  <!-- <div style="margin-left: 10px;">
                     <a href="" data-product="{{ item.product.id }}" data-action="add" class="update-cart" style="text-decoration: none; color: #000;">	&#9658;</a>
-                  </div>
+                  </div> -->
 
                 </div>
                 <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
@@ -58,6 +63,8 @@
 
               <div class="float-end">
                 <p class="mb-0 me-5 d-flex align-items-center">
+                  <!-- <strong>Количество товаров: {{ cart.total_products }}<strong> 
+                    <br><br>  -->
                   <strong>Итого:<strong> <span
                     class="lead fw-normal">{{ cart.final_price|floatformat:3 }} &#8381</span>
                 </p>
