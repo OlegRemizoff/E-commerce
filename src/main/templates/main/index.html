@@ -65,20 +65,12 @@
                             <p>{{ product.description }}</p>
                             <div class="product-bottom-details d-flex justify-content-between">
                                 <div class="product-price"><small>$96.00</small>{{ product.price }}0 &#8381;</div>
-
-                                {% if product.category.slug == 'notebooks' %}
                                 <div class="product-links">
-                                    <a href="{% url 'add_to_cart' ct_model='notebook' slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="{% url 'add_to_cart' ct_model=product.get_model_name slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
                                     <a href="#"><i class="far fa-heart"></i></a>
                                 </div>
-                                {% else %}
-                                <div class="product-links">
-                                    <a href="{% url 'add_to_cart' ct_model='smartphone' slug=product.slug %}"><i class="fas fa-shopping-cart"></i></a>
-                                    <a href="#"><i class="far fa-heart"></i></a>
-                                </div>
-                                {% endif %}
                             </div>
-                            <p>{{product | to_class_name}}</p>
+                            <!-- <p>{{product | to_class_name}}</p> -->
                         </div>
                     </div>
                 </div>
