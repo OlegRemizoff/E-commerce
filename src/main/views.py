@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, View
 
@@ -82,7 +83,7 @@ class AddToCartView(CartMixin, View):
         if created:
             self.cart.products.add(cart_product)
         self.cart.save()
-        # print(ct_model, product_slug)
+        messages.add_message(request, messages.INFO, 'Товар  успешно добавлен')
         return HttpResponseRedirect('/cart/')
 
 
@@ -98,6 +99,7 @@ class DeleteFromCartView(CartMixin, View):
         self.cart.products.remove(cart_product)
         cart_product.delete()
         self.cart.save()
+        messages.add_message(request, messages.INFO, 'Товар успешно удален')
         return HttpResponseRedirect('/cart/')
 
 
@@ -115,6 +117,7 @@ class CartChangeQTYView(CartMixin, View):
         cart_product.qty = qty
         cart_product.save()
         self.cart.save() # для обновления информации в корзине
+        messages.add_message(request, messages.INFO, 'Кол-во успешно изменено')        
         return HttpResponseRedirect('/cart/')
 
 
