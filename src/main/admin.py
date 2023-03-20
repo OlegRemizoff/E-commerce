@@ -47,7 +47,8 @@ class NotebookAdmin(admin.ModelAdmin):
     show_image.__name__ = 'Миниатюра'
 
 
-
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'first_name', 'last_name', 'phone', 'address', 'status', 'buying_type', 'comment', 'created_at', 'order_date',)
 
 admin.site.register(Cart)
 admin.site.register(Customer)
@@ -55,6 +56,7 @@ admin.site.register(Category)
 admin.site.register(Notebook, NotebookAdmin)
 admin.site.register(SmartPhone, SmartPhoneAdmin)
 admin.site.register(CartProduct)
+admin.site.register(Order, OrderAdmin)
 
 
 
