@@ -7,6 +7,7 @@ from django.views.generic import DetailView, View
 from .models import SmartPhone, Notebook, LatestProducts
 from .models import Category, CartProduct
 from .utils import CartMixin
+from .forms import OrderForms
 
 # def index(request):
 #     products = LatestProducts.objects.get_products_for_main_page(
@@ -130,3 +131,10 @@ class CartView(CartMixin, View):
         # categories = Category.objects.get_category_for_navbar()
 
         return render(request, 'main/cart.html', {'cart': self.cart})
+
+
+class CheckoutView(CartMixin, View):
+    
+    def get(self, request, *args, **kwargs):
+        form = OrderForms(request.POST or None)
+        return render(request, 'main/checkout.html', {'cart': self.cart, 'form': form})
