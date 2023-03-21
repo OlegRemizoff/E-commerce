@@ -254,6 +254,8 @@ class Order(models.Model):
     first_name = models.CharField('Имя', max_length=255)
     last_name = models.CharField('Фамилия', max_length=255)
     phone = models.CharField('Телефон', max_length=20)
+    cart = models.ForeignKey(Cart, verbose_name='Корзина',
+                             on_delete=models.CASCADE, null=True, blank=True)
     address = models.CharField('Адрес', max_length=1024, null=True, blank=True)
     status = models.CharField(
         'Статус заказа', max_length=100, choices=STATUS_CHOICES, default=STATUS_NEW)
