@@ -68,7 +68,7 @@
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-normal mb-0 text-black">Форма зказа</h3>
           </div>
-            <form action="" method="POST">
+            <form action="{% url 'make_order' %}" method="POST">
               {% csrf_token %}
               {{ form|crispy   }}
               <div class="d-grid gap-2">

@@ -1,3 +1,4 @@
+from django.db import models
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import View
 from .models import Category, Customer, Cart
@@ -29,3 +30,27 @@ class CartMixin(View):
 
         self.cart = cart
         return super().dispatch(request, *args, **kwargs)
+    
+
+def recalc_cart(cart):
+    cart_data=cart.products.aggregate(models.Sum('final_price'), models.Count('id'))
+    if cart_data.get('final_price__sum'):
+        cart.final_price = cart_data['final_price__sum']
+    else:
+        cart.final_price = 0
+    cart.total_products = cart_data['id__count'] 
+
+
+
+
+# Olde cart_calculate
+# def save(self, *args, **kwargs):
+#     #sql функции интерпретированные Django
+#     cart_data=self.products.aggregate(models.Sum('final_price'), models.Count('id'))
+#     print(cart_data) #{'final_price__sum': None, 'id__count': 0}
+#     if cart_data.get('final_price__sum'):
+#         self.final_price = cart_data['final_price__sum']
+#     else:
+#         self.final_price = 0
+#     self.total_products = cart_data['id__count'] 
+#     return super().save(*args, **kwargs)

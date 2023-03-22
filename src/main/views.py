@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render
 from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
@@ -5,8 +6,8 @@ from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, View
 
 from .models import SmartPhone, Notebook, LatestProducts
-from .models import Category, CartProduct
-from .utils import CartMixin
+from .models import Category, CartProduct, Customer
+from .utils import CartMixin, recalc_cart
 from .forms import OrderForms
 
 # def index(request):
@@ -83,7 +84,8 @@ class AddToCartView(CartMixin, View):
         )
         if created:
             self.cart.products.add(cart_product)
-        self.cart.save()
+        # self.cart.save()
+        recalc_cart(self.cart)
         messages.add_message(request, messages.INFO, 'Товар  успешно добавлен')
         return HttpResponseRedirect('/cart/')
 
@@ -99,7 +101,8 @@ class DeleteFromCartView(CartMixin, View):
         )
         self.cart.products.remove(cart_product)
         cart_product.delete()
-        self.cart.save()
+        # self.cart.save()
+        recalc_cart(self.cart)
         messages.add_message(request, messages.INFO, 'Товар успешно удален')
         return HttpResponseRedirect('/cart/')
 
@@ -117,7 +120,8 @@ class CartChangeQTYView(CartMixin, View):
         qty = int(request.POST.get('qty'))
         cart_product.qty = qty
         cart_product.save()
-        self.cart.save() # для обновления информации в корзине
+        #self.cart.save()  для обновления информации в корзине
+        recalc_cart(self.cart)
         messages.add_message(request, messages.INFO, 'Кол-во успешно изменено')        
         return HttpResponseRedirect('/cart/')
 
@@ -138,3 +142,28 @@ class CheckoutView(CartMixin, View):
     def get(self, request, *args, **kwargs):
         form = OrderForms(request.POST or None)
         return render(request, 'main/checkout.html', {'cart': self.cart, 'form': form})
+    
+
+class MakeOrderView(CartMixin, View):
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        form = OrderForms(request.POST or None)
+        customer = Customer.objects.get(user=request.User)
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.customer = customer
+            new_order.first_name = form.cleaned_data['first_name']
+            new_order.last_name = form.cleaned_data['last_name']
+            new_order.phone = form.cleaned_data['phone']
+            new_order.address = form.cleaned_data['address']
+            new_order.buying_type = form.cleaned_data['buying_type']
+            new_order.order_date = form.cleaned_data['order_date']
+            new_order.comment = form.cleaned_data['comment']
+            new_order.save()
+            self.cart.in_order = True
+            new_order.cart = self.cart
+            new_order.save()
+            customer.orders.add(new_order)
+            return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/checkout/')
