@@ -189,7 +189,7 @@ class CartProduct(models.Model):
 
     class Meta:
         verbose_name = 'Товар в корзине'
-        verbose_name_plural = 'Товыры в корзине'
+        verbose_name_plural = 'Товары в корзине'
 
 class Cart(models.Model):
     '''Корзина'''

@@ -5,6 +5,10 @@ from django.forms import ModelChoiceField
 from .models import *
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug',)
+    prepopulated_fields = {"slug": ("name",)}
+
 class SmartPhoneAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'price', 'show_image', 'is_available',)
     list_editable = ('is_available', )
@@ -52,7 +56,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart)
 admin.site.register(Customer)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Notebook, NotebookAdmin)
 admin.site.register(SmartPhone, SmartPhoneAdmin)
 admin.site.register(CartProduct)
