@@ -318,7 +318,7 @@ li a.dropdown-item:focus, li a.dropdown-item:hover {
 .service-item::before {
 	border-bottom: 1px solid #ec4835;
 	border-left: 1px solid #ec4835;
-	-webkit-transform-origin: 0 100%;
+	/* -webkit-transform-origin: 0 100%; */
 }
 
 .service-item::after {
@@ -449,7 +449,7 @@ li a.dropdown-item:focus, li a.dropdown-item:hover {
 }
 
 a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
-	border-color: #ee6e73;
+	border-color: #6eee8e;
 }
 
 .thumbnails .thumb-main a {
